@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  db:
+    container_name: "database"
+    image: "postgres:latest"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meet_your_tutor_dev
+      POSTGRES_INITDB_ARGS: "--auth-local=md5"
+
+  web:
+    container_name: "meet_your_tutor"
+    build:
+      context: .
+      args:
+        APP_NAME: meet_your_tutor
+        APP_VSN: 0.1.0
+        MIX_ENV: prod
+    ports:
+      - "81:4000"
+    environment:
+      DB_PASSWORD: postgres
+      DB_USER: postgres
+      DB_DATABASE: meet_your_tutor_dev
+      DB_HOST: db
+      DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor_dev
+      SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
+    depends_on:
+      - db
+    restart: on-failure:10
+    volumes:
+      - /opt/app/deps
+      - /opt/app/_build
+
+volumes:
+  db-data:

@@ -1,5 +1,9 @@
 defmodule MeetYourTutor.Repo do
   use Ecto.Repo,
-    otp_app: :meet_your_tutor,
-    adapter: Ecto.Adapters.Postgres
+      otp_app: :meet_your_tutor,
+      adapter: Ecto.Adapters.Postgres
+
+  def init(_type, config) do
+    {:ok, Keyword.put(config, :url, System.get_env("DATABASE_URL"))}
+  end
 end
