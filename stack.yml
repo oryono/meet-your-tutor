@@ -1,0 +1,49 @@
+version: "3.5"
+
+networks:
+  webnet:
+    driver: overlay
+    attachable: true # Needed in order to run custom commands in the container
+
+services:
+  db:
+    image: "postgres:latest"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: meet_your_tutor
+      POSTGRES_INITDB_ARGS: "--auth-local=md5"
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+
+    networks:
+      - webnet
+
+  web:
+    image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
+    ports:
+      - "82:4000" # In our .env file above, we chose port 4000
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor
+      SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
+    depends_on:
+      - db
+    restart: on-failure:10
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+    networks:
+      - webnet
+
+volumes:
+  db-data:
