@@ -1,6 +1,6 @@
 variables:
   POSTGRES_DB: meet_your_tutor
-  POSTGRES_HOST: db
+  POSTGRES_HOST: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   POSTGRES_INITDB_ARGS: "--auth-local=md5"
