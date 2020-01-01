@@ -66,7 +66,7 @@ deploy_prod:
   image: docker:latest
   stage: deploy
   variables:
-    DOCKER_HOST: "tcp://35.193.232.210:2376"
+    DOCKER_HOST: "tcp://35.192.209.181:2376"
     DOCKER_CERT_PATH: "certs"
     DOCKER_TLS_VERIFY: "1"
     DOCKER_OPTS: "--insecure-registry 35.193.232.210:2376"
