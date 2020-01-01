@@ -3,7 +3,7 @@ version: "3.5"
 networks:
   webnet:
     driver: overlay
-    attachable: true # Needed in order to run custom commands in the container
+    attachable: true
 
 services:
   db:
