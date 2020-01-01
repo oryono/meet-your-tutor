@@ -40,8 +40,8 @@ elixir_test:
   services:
     - postgres:latest
   script:
-    - mix ecto.create
-    - mix ecto.migrate
+    - MIX_ENV=test mix ecto.create
+    - MIX_ENV=test mix ecto.migrate
     # - mix test
 
   dependencies:
