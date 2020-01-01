@@ -19,10 +19,6 @@ services:
     container_name: "meet_your_tutor"
     build:
       context: .
-      args:
-        APP_NAME: meet_your_tutor
-        APP_VSN: 0.1.0
-        MIX_ENV: prod
     ports:
       - "81:4000"
     environment:

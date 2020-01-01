@@ -1,14 +1,5 @@
 use Mix.Config
 
-# Configure your database
-config :meet_your_tutor, MeetYourTutor.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "meet_your_tutor_dev",
-  hostname: "localhost",
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 10
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #
@@ -18,7 +9,7 @@ config :meet_your_tutor, MeetYourTutor.Repo,
 config :meet_your_tutor, MeetYourTutorWeb.Endpoint,
   http: [port: 4000],
   debug_errors: true,
-  code_reloader: false,
+  code_reloader: true,
   check_origin: false,
   watchers: []
 
@@ -55,3 +46,5 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+import_config "dev.secret.exs"

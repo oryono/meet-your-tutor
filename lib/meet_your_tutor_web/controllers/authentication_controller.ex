@@ -18,6 +18,12 @@ defmodule MeetYourTutorWeb.AuthenticationController do
     end
   end
 
+  def login(conn, %{}) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{message: "Please enter your credentials"})
+  end
+
   def register(conn, %{} = params) do
     with {:ok, %User{} = user} <- Accounts.create_user(params),
          {:ok, token, _} = MeetYourTutorWeb.Guardian.encode_and_sign(user) do

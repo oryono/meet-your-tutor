@@ -16,6 +16,8 @@ defmodule MeetYourTutor.Accounts.User do
     user
     |> cast(attrs, [:name, :email, :password])
     |> validate_required([:name, :email, :password])
+    |> validate_format(:email, ~r/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
+    |> validate_length(:password, min: 6)
     |> unique_constraint(:email)
     |> hash_password
   end
