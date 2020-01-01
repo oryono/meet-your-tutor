@@ -69,13 +69,13 @@ deploy_prod:
     DOCKER_HOST: "tcp://35.192.209.181:2376"
     DOCKER_CERT_PATH: "certs"
     DOCKER_TLS_VERIFY: "1"
-    DOCKER_OPTS: "--insecure-registry 35.193.232.210:2376"
+    DOCKER_OPTS: "--insecure-registry 35.192.209.181:2376"
   before_script:
     - mkdir $DOCKER_CERT_PATH
     - echo "$TLSCACERT" > $DOCKER_CERT_PATH/ca.pem
     - echo "$TLSCERT" > $DOCKER_CERT_PATH/cert.pem
     - echo "$TLSKEY" > $DOCKER_CERT_PATH/key.pem
   script:
-    - docker stack deploy -c stack.yml banking_graph
+    - docker stack deploy -c stack.yml meet_your_tutor
   dependencies:
     - publish
