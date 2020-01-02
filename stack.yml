@@ -21,7 +21,7 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencryptresolver.acme.email=user@domaine.com"
+      - "--certificatesresolvers.letsencryptresolver.acme.email=patricken08@gmail.com"
       - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
     volumes:
       # To persist certificates
@@ -35,6 +35,7 @@ services:
     networks:
       - webnet
   db:
+    container_name: database
     image: "postgres:latest"
     volumes:
       - "db-data:/var/lib/postgresql/data"
@@ -56,6 +57,7 @@ services:
       - private
 
   web:
+    container_name: meet-your-tutor
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
     ports:
       - "4000:4000" # In our .env file above, we chose port 4000
