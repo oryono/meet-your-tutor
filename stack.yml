@@ -25,6 +25,7 @@ services:
       -  /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 80:80
+      - 443:443
       - 8080:8080
     networks:
       - webnet
@@ -63,6 +64,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.meet-your-tutor.rule=Host(`meet-your-tutor.patrickoryono.site`)"
+        - "traefik.http.routers.meet-your-tutor.entrypoints=web"
       replicas: 1
       restart_policy:
         condition: on-failure
