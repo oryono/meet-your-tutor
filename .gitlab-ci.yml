@@ -66,10 +66,10 @@ deploy_prod:
   image: docker:latest
   stage: deploy
   variables:
-    DOCKER_HOST: "tcp://34.69.135.21:2376"
+    DOCKER_HOST: "tcp://meet-your-tutor.patrickoryono.site:2376"
     DOCKER_CERT_PATH: "certs"
     DOCKER_TLS_VERIFY: "1"
-    DOCKER_OPTS: "--insecure-registry 34.69.135.21:2376"
+#    DOCKER_OPTS: "--insecure-registry meet-your-tutor.patrickoryono.site:2376"
   before_script:
     - mkdir $DOCKER_CERT_PATH
     - echo "$TLSCACERT" > $DOCKER_CERT_PATH/ca.pem
