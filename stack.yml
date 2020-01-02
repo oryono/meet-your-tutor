@@ -5,30 +5,7 @@ networks:
     driver: overlay
     attachable: true
 
-  private:
-    internal: true
-
 services:
-  traefik:
-    image: traefik:v2.1
-    command:
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
-      - "--api.insecure=true --providers.docker"
-      - "--providers.docker.swarmMode=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=webnet"
-      - "--entrypoints.web.address=:80"
-    volumes:
-      # To persist certificates
-      - traefik-certificates:/letsencrypt
-      # So that Traefik can listen to the Docker events
-      -  /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
-    networks:
-      - webnet
   db:
     image: "postgres:latest"
     volumes:
@@ -48,12 +25,12 @@ services:
         condition: on-failure
 
     networks:
-      - private
+      - webnet
 
   web:
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
     ports:
-      - "4000:4000" # In our .env file above, we chose port 4000
+      - "81:4000" # In our .env file above, we chose port 4000
     environment:
       DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor
       SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
@@ -61,18 +38,12 @@ services:
       - db
     restart: on-failure:10
     deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.meet-your-tutor.rule=Host(`meet-your-tutor.patrickoryono.site`)"
-        - "traefik.http.routers.meet-your-tutor.entrypoints=web"
       replicas: 1
       restart_policy:
         condition: on-failure
 
     networks:
       - webnet
-      - private
 
 volumes:
   db-data:
-  traefik-certificates:
