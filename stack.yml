@@ -18,11 +18,6 @@ services:
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=webnet"
       - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencryptresolver.acme.email=patricken08@gmail.com"
-      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
     volumes:
       # To persist certificates
       - traefik-certificates:/letsencrypt
@@ -30,12 +25,10 @@ services:
       -  /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 80:80
-      - 443:443
       - 8080:8080
     networks:
       - webnet
   db:
-    container_name: database
     image: "postgres:latest"
     volumes:
       - "db-data:/var/lib/postgresql/data"
@@ -57,7 +50,6 @@ services:
       - private
 
   web:
-    container_name: meet-your-tutor
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
     ports:
       - "4000:4000" # In our .env file above, we chose port 4000
@@ -71,8 +63,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.http.routers.meet-your-tutor.rule=Host(`meet-your-tutor.patrickoryono.site`)"
-        - "traefik.http.routers.meet-your-tutor.entrypoints=web"
-        - "traefik.http.services.meet-your-tutor.loadbalancer.server.port=4000"
       replicas: 1
       restart_policy:
         condition: on-failure
