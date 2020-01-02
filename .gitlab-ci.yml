@@ -63,7 +63,7 @@ publish:
     - elixir_test
 
 deploy_prod:
-  image: docker:latest
+  image: docker:19.03.0
   stage: deploy
   variables:
     DOCKER_HOST: "tcp://meet-your-tutor.patrickoryono.site:2376"
