@@ -70,9 +70,9 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.web.rule=Host(`meet-your-tutor.patrickoryono.site`)"
-        - "traefik.http.routers.web.entrypoints=web"
-        - "traefik.http.services.web.loadbalancer.server.port=4000"
+        - "traefik.http.routers.meet-your-tutor.rule=Host(`meet-your-tutor.patrickoryono.site`)"
+        - "traefik.http.routers.meet-your-tutor.entrypoints=web"
+        - "traefik.http.services.meet-your-tutor.loadbalancer.server.port=4000"
       replicas: 1
       restart_policy:
         condition: on-failure
