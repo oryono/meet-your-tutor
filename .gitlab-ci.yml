@@ -69,7 +69,7 @@ deploy_prod:
     DOCKER_HOST: "tcp://meet-your-tutor.patrickoryono.site:2376"
     DOCKER_CERT_PATH: "certs"
     DOCKER_TLS_VERIFY: "1"
-#    DOCKER_OPTS: "--insecure-registry meet-your-tutor.patrickoryono.site:2376"
+    DOCKER_OPTS: "--insecure-registry meet-your-tutor.patrickoryono.site:2376"
   before_script:
     - mkdir $DOCKER_CERT_PATH
     - echo "$TLSCACERT" > $DOCKER_CERT_PATH/ca.pem
