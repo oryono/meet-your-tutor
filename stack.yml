@@ -59,7 +59,6 @@ services:
         condition: on-failure
 
     networks:
-      - webnet
       - traefik-public
 
   web:
