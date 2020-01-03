@@ -64,7 +64,7 @@ services:
   web:
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
     ports:
-      - 81:4000 # In our .env file above, we chose port 4000
+      - 81:4000
     environment:
       DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor
       SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
