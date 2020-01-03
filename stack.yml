@@ -1,11 +1,44 @@
 version: "3.5"
 
 networks:
+  traefik-public:
   webnet:
     driver: overlay
     attachable: true
 
 services:
+  reverse-proxy:
+    image: traefik:v2.0.2
+    command:
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik-public"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencryptresolver.acme.email=patricken08@gmail.com"
+      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - traefik-certificates:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik-public
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+        - "traefik.http.routers.http-catchall.entrypoints=web"
+        - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      placement:
+        constraints:
+          - node.role == manager
   db:
     image: "postgres:latest"
     volumes:
@@ -26,6 +59,7 @@ services:
 
     networks:
       - webnet
+      - traefik-public
 
   web:
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
@@ -38,6 +72,12 @@ services:
       - db
     restart: on-failure:10
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.helloworld.rule=Host(`localhost`)"
+        - "traefik.http.services.helloworld.loadbalancer.server.port=81"
+        - "traefik.http.routers.helloworld.entrypoints=websecure"
+        - "traefik.http.routers.helloworld.tls.certresolver=letsencryptresolver"
       replicas: 1
       restart_policy:
         condition: on-failure
@@ -47,3 +87,4 @@ services:
 
 volumes:
   db-data:
+  traefik-certificates:
