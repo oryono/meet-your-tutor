@@ -2,7 +2,7 @@ FROM elixir:1.9.0-alpine AS builder
 # By convention, /opt is typically used for applications
 WORKDIR /opt/app
 
-# This step installs all the build tools we'll need
+# This step installs all the build tools we'll need.
 RUN apk update && \
   apk upgrade --no-cache && \
   apk add --no-cache \
