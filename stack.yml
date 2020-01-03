@@ -74,10 +74,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.helloworld.rule=Host(`localhost`)"
-        - "traefik.http.services.helloworld.loadbalancer.server.port=81"
-        - "traefik.http.routers.helloworld.entrypoints=websecure"
-        - "traefik.http.routers.helloworld.tls.certresolver=letsencryptresolver"
+        - "traefik.http.routers.web.rule=Host(`meet-your-tutor.patrickoryono.site`)"
+        - "traefik.http.services.web.loadbalancer.server.port=81"
+        - "traefik.http.routers.web.entrypoints=websecure"
+        - "traefik.http.routers.web.tls.certresolver=letsencryptresolver"
       replicas: 1
       restart_policy:
         condition: on-failure
