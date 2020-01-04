@@ -38,9 +38,7 @@ services:
         - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirs.entrypoints=web"
         - "traefik.http.routers.redirs.middlewares=redirect-to-https"
-      placement:
-        constraints:
-          - node.role == manager
+
   db:
     image: "postgres:latest"
     volumes:
