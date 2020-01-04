@@ -29,15 +29,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - traefik-public
-#    deploy:
-#      labels:
-#        - "traefik.enable=true"
-#        # middleware redirect
-#        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-#        # global redirect to https
-#        - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
-#        - "traefik.http.routers.redirs.entrypoints=web"
-#        - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.traefik.rule=Host(`monitor.patrickoryono.site`)"
+        - "traefik.http.routers.traefik.service=api@internal"
 
   db:
     image: "postgres:latest"
