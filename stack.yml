@@ -21,9 +21,11 @@ services:
       - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.letsencryptresolver.acme.email=patricken08@gmail.com"
       - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
+      - "--api.insecure"
     ports:
       - 80:80
       - 443:443
+      - 8080:8080
     volumes:
       # So that Traefik can listen to the Docker events
       - traefik-certificates:/letsencrypt
@@ -33,10 +35,13 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.http-catchall.rule=hostregexp(`{any:.*}`)"
-        - "traefik.http.routers.http-catchall.entrypoints=web"
-        - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
+        # middleware redirect
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+        # global redirect to https
+        - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+        - "traefik.http.routers.redirs.entrypoints=web"
+        - "traefik.http.routers.redirs.middlewares=redirect-to-https"
       placement:
         constraints:
           - node.role == manager
