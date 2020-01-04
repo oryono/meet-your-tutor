@@ -3,9 +3,6 @@ version: "3.5"
 networks:
   traefik-public:
     external: true
-#  webnet:
-#    driver: overlay
-#    attachable: true
 
 services:
   reverse-proxy:
@@ -37,7 +34,6 @@ services:
         - "traefik.enable=true"
         # middleware redirect
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-
         # global redirect to https
         - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
         - "traefik.http.routers.redirs.entrypoints=web"
@@ -68,8 +64,6 @@ services:
 
   web:
     image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
-#    ports:
-#      - 81:4000
     environment:
       DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor
       SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
