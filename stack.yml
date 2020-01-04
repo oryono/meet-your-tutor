@@ -29,15 +29,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - traefik-public
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        # middleware redirect
-        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-        # global redirect to https
-        - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
-        - "traefik.http.routers.redirs.entrypoints=web"
-        - "traefik.http.routers.redirs.middlewares=redirect-to-https"
+#    deploy:
+#      labels:
+#        - "traefik.enable=true"
+#        # middleware redirect
+#        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+#        # global redirect to https
+#        - "traefik.http.routers.redirs.rule=hostregexp(`{host:.+}`)"
+#        - "traefik.http.routers.redirs.entrypoints=web"
+#        - "traefik.http.routers.redirs.middlewares=redirect-to-https"
 
   db:
     image: "postgres:latest"
@@ -75,6 +75,10 @@ services:
         - "traefik.http.services.web.loadbalancer.server.port=4000"
         - "traefik.http.routers.web.entrypoints=websecure"
         - "traefik.http.routers.web.tls.certresolver=letsencryptresolver"
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+        - "traefik.http.routers.redir.rule=Host(`meet-your-tutor.patrickoryono.site`)"
+        - "traefik.http.routers.redir.entrypoints=web"
+        - "traefik.http.routers.redir.middlewares=redirect-to-https"
       replicas: 1
       restart_policy:
         condition: on-failure
