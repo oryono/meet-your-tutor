@@ -33,7 +33,7 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.http-catchall.rule=hostregexp(`{host:.+}`)"
+        - "traefik.http.routers.http-catchall.rule=hostregexp(`{any:.*}`)"
         - "traefik.http.routers.http-catchall.entrypoints=web"
         - "traefik.http.routers.http-catchall.middlewares=redirect-to-https@docker"
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
