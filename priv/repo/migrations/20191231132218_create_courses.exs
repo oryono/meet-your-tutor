@@ -10,7 +10,7 @@ defmodule MeetYourTutor.Repo.Migrations.CreateCourses do
       timestamps()
 
 
-    endpo
+    end
 
   end
 end
