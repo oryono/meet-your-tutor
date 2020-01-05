@@ -5,10 +5,12 @@ defmodule MeetYourTutor.Repo.Migrations.CreateCourses do
     create table(:courses) do
       add :name, :string
       add :description, :text
-      add :category_id, :integer
+      add :category_id, references(:categories, on_delete: :nothing)
 
       timestamps()
-    end
+
+
+    endpo
 
   end
 end

@@ -3,11 +3,12 @@ defmodule MeetYourTutorWeb.CourseController do
 
   alias MeetYourTutor.Courses
   alias MeetYourTutor.Courses.Course
+  alias MeetYourTutor.Repo
 
   action_fallback MeetYourTutorWeb.FallbackController
 
   def index(conn, _params) do
-    courses = Courses.list_courses()
+    courses = Courses.list_courses() |> Repo.preload([:category])
     render(conn, "index.json", courses: courses)
   end
 

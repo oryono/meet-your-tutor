@@ -8,6 +8,8 @@ defmodule MeetYourTutor.Accounts.User do
     field :email, :string
     field :password, :string, virtual: true
 
+    has_many :courses, MeetYourTutor.Courses.Course
+
     timestamps()
   end
 

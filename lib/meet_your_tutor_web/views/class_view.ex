@@ -11,11 +11,13 @@ defmodule MeetYourTutorWeb.ClassView do
   end
 
   def render("class.json", %{class: class}) do
-    %{id: class.id,
+    %{
+      id: class.id,
       course_id: class.course_id,
       description: class.description,
       start_date: class.start_date,
       end_date: class.end_date,
-      course_poster: class.course_poster}
+      course_banner: class.course_banner,
+    }
   end
 end

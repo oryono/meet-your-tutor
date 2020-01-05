@@ -13,6 +13,6 @@ defmodule MeetYourTutor.Courses.Category do
   def changeset(category, attrs) do
     category
     |> cast(attrs, [:name, :description])
-    |> validate_required([:name, :description])
+    |> validate_required([:name])
   end
 end

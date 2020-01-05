@@ -14,6 +14,8 @@ defmodule MeetYourTutorWeb.CourseView do
     %{id: course.id,
       name: course.name,
       description: course.description,
-      category_id: course.category_id}
+      category_id: course.category_id,
+      category: render_one(course.category, MeetYourTutorWeb.CategoryView, "category.json")
+    }
   end
 end

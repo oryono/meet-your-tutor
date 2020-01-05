@@ -12,6 +12,8 @@ defmodule MeetYourTutorWeb.ClassController do
   end
 
   def create(conn, %{"class" => class_params}) do
+    class_params = Map.put(class_params, "user_id", Guardian.Plug.current_resource(conn).id)
+
     with {:ok, %Class{} = class} <- Courses.create_class(class_params) do
       conn
       |> put_status(:created)

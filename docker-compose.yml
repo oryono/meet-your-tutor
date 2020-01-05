@@ -31,8 +31,7 @@ services:
       - db
     restart: on-failure:10
     volumes:
-      - /opt/app/deps
-      - /opt/app/_build
+      - .:/opt/app
 
 volumes:
   db-data:
