@@ -3,8 +3,9 @@ defmodule MeetYourTutor.Repo.Migrations.CreateClasses do
 
   def change do
     create table(:classes) do
-      add :course_id, references(:courses)
+      add :name, :string
       add :description, :text
+      add :category_id, references(:categories, on_delete: :nothing)
       add :start_date, :naive_datetime, default: fragment("now()")
       add :user_id, references(:users)
       add :location, :string
@@ -15,7 +16,7 @@ defmodule MeetYourTutor.Repo.Migrations.CreateClasses do
       timestamps()
     end
 
-    create unique_index(:classes, [:course_id, :user_id], name: :classes_course_id_user_id_constraint)
+    create unique_index(:classes, [:name, :user_id], name: :classes_name_user_id_constraint)
 
   end
 end

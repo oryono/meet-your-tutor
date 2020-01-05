@@ -20,7 +20,8 @@ defmodule MeetYourTutorWeb.Router do
   scope "/api", MeetYourTutorWeb do
     pipe_through [:api, :auth]
     resources "/categories", CategoryController, except: [:new, :edit]
-    resources "/courses", CourseController, except: [:new, :edit]
     resources "/classes", ClassController, except: [:new, :edit]
+    resources "/enrollments", EnrollmentController, except: [:new, :edit]
+    resources "/users", UserController, except: [:new, :edit]
   end
 end

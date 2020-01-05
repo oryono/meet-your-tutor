@@ -1,13 +1,15 @@
 defmodule MeetYourTutorWeb.UserController do
   use MeetYourTutorWeb, :controller
 
+  alias MeetYourTutor.Repo
+
   alias MeetYourTutor.Accounts
   alias MeetYourTutor.Accounts.User
 
   action_fallback MeetYourTutorWeb.FallbackController
 
   def index(conn, _params) do
-    users = Accounts.list_users()
+    users = Accounts.list_users() |> Repo.preload(:classes)
     render(conn, "index.json", users: users)
   end
 
@@ -21,7 +23,7 @@ defmodule MeetYourTutorWeb.UserController do
   end
 
   def show(conn, %{"id" => id}) do
-    user = Accounts.get_user!(id)
+    user = Accounts.get_user!(id) |> Repo.preload([classes: [:user]])
     render(conn, "show.json", user: user)
   end
 
