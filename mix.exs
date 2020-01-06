@@ -43,6 +43,7 @@ defmodule MeetYourTutor.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:pbkdf2_elixir, "~> 1.0"},
       {:guardian, "~> 1.2"},
+      {:cors_plug, "~> 2.0"},
     ]
   end
 

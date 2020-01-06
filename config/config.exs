@@ -10,6 +10,10 @@ use Mix.Config
 config :meet_your_tutor,
   ecto_repos: [MeetYourTutor.Repo]
 
+config :cors_plug,
+       origin: ["*"],
+       max_age: 86400
+
 # Guardian config
 config :meet_your_tutor, MeetYourTutorWeb.Guardian,
        issuer: "Meet Your Tutor",
