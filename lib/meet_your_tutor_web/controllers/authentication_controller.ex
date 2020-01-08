@@ -3,6 +3,7 @@ defmodule MeetYourTutorWeb.AuthenticationController do
 
   alias MeetYourTutor.Accounts
   alias MeetYourTutor.Accounts.User
+  alias MeetYourTutorWeb.UserView
 
   action_fallback MeetYourTutorWeb.FallbackController
 
@@ -31,5 +32,12 @@ defmodule MeetYourTutorWeb.AuthenticationController do
       |> put_status(:created)
       |> render("token.json", %{user: user, token: token})
     end
+  end
+
+  def current_user(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    conn
+    |> put_view(UserView)
+    |> render("user.json", user: user)
   end
 end

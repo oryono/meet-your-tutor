@@ -19,6 +19,7 @@ defmodule MeetYourTutor.Courses.Class do
     class
     |> cast(attrs, [:name, :description, :start_date, :end_date, :course_banner, :user_id, :location])
     |> validate_required([:name, :user_id, :location])
-    |>  foreign_key_constraint(:user_id)
+    |> foreign_key_constraint(:user_id)
+    |> unique_constraint(:name_user_constraint, name: :classes_name_user_id_constraint, message: "Same user cannot have two courses with same name")
   end
 end

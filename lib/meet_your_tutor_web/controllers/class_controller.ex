@@ -16,6 +16,7 @@ defmodule MeetYourTutorWeb.ClassController do
     class_params = Map.put(class_params, "user_id", Guardian.Plug.current_resource(conn).id)
 
     with {:ok, %Class{} = class} <- Courses.create_class(class_params) do
+      class = class |> Repo.preload(:user)
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.class_path(conn, :show, class))
@@ -29,7 +30,7 @@ defmodule MeetYourTutorWeb.ClassController do
   end
 
   def update(conn, %{"id" => id, "class" => class_params}) do
-    class = Courses.get_class!(id)
+    class = Courses.get_class!(id) |> Repo.preload(:user)
 
     with {:ok, %Class{} = class} <- Courses.update_class(class, class_params) do
       render(conn, "show.json", class: class)
