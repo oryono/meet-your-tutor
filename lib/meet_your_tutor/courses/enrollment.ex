@@ -3,7 +3,7 @@ defmodule MeetYourTutor.Courses.Enrollment do
   import Ecto.Changeset
 
   schema "enrollments" do
-    belongs_to :course, MeetYourTutor.Courses.Course
+    belongs_to :class, MeetYourTutor.Courses.Class
     belongs_to :user, MeetYourTutor.Accounts.User
 
     timestamps()
