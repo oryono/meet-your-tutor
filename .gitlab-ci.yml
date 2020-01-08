@@ -12,7 +12,7 @@ stages:
   - init
   - test
   - publish
-  - deploy
+  - deploy_staging
 
 .elixir_default: &elixir_default
   image: elixir:1.9.0
@@ -62,9 +62,11 @@ publish:
   dependencies:
     - elixir_test
 
-deploy_prod:
+deploy_staging:
   image: docker:19.03.0
-  stage: deploy
+  stage: deploy_staging
+  only:
+    - staging
   variables:
     DOCKER_HOST: "tcp://meet-your-tutor.patrickoryono.site:2376"
     DOCKER_CERT_PATH: "certs"
