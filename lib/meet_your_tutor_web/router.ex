@@ -25,5 +25,6 @@ defmodule MeetYourTutorWeb.Router do
     resources "/classes", ClassController, except: [:new, :edit]
     resources "/enrollments", EnrollmentController, except: [:new, :edit]
     resources "/users", UserController, except: [:new, :edit]
+    get "/users/:id/classes", UserController, :user_classes
   end
 end

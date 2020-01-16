@@ -37,5 +37,4 @@ if Mix.env == :dev do
   MeetYourTutor.Courses.create_class(%{name: "Introduction to React.js", category_id: 2, location: "Kampala", user_id: 4})
   MeetYourTutor.Courses.create_class(%{name: "Introduction to Algebra", category_id: 4, user_id: 5})
   MeetYourTutor.Courses.create_class(%{name: "Introduction to French", category_id: 1, user_id: 5})
-
 end

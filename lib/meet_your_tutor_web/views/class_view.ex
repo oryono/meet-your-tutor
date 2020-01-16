@@ -33,4 +33,17 @@ defmodule MeetYourTutorWeb.ClassView do
       course_banner: class.course_banner,
     }
   end
+
+  def render("classes.json", %{classes: classes}) do
+#    %{
+#      id: classes.id,
+#      name: classes.name,
+#      description: classes.description,
+#      start_date: classes.start_date,
+#      end_date: classes.end_date,
+#      course_banner: classes.course_banner,
+#    }
+    %{data: render_many(classes, ClassView, "class.json")}
+
+  end
 end

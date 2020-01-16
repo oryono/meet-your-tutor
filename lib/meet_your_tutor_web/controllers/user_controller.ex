@@ -42,4 +42,17 @@ defmodule MeetYourTutorWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def user_classes(conn,  %{"id" => id}) do
+      user = Accounts.get_user!(id) |> Repo.preload(:classes)
+      classes = user.classes
+      IO.puts "*********"
+      IO.inspect classes
+      IO.puts "*********"
+      conn
+      |> put_view(MeetYourTutorWeb.ClassView)
+      |> render("classes.json", classes: classes)
+
+
+  end
 end
