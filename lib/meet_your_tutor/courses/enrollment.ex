@@ -12,8 +12,10 @@ defmodule MeetYourTutor.Courses.Enrollment do
   @doc false
   def changeset(enrollment, attrs) do
     enrollment
-    |> cast(attrs, [:course_id, :user_id])
-    |> validate_required([:course_id, :user_id])
-    |> unique_constraint(:email_class, name: :enrollments_course_id_user_id_constraint)
+    |> cast(attrs, [:class_id, :user_id])
+    |> validate_required([:class_id, :user_id])
+    |> unique_constraint(:email_class_constraint, name: :enrollments_class_id_user_id_constraint, message: "User can't enroll for same class more than once")
+    |> foreign_key_constraint(:class_id)
+    |> foreign_key_constraint(:user_id)
   end
 end
