@@ -41,3 +41,7 @@ config :meet_your_tutor, MeetYourTutorWeb.Endpoint, server: true
 #
 # Then you can assemble a release by calling `mix release`.
 # See `mix help release` for more information.
+
+config :logger, backends: [{LoggerFileBackend, :error_log}]
+
+config :logger, :error_log, path: '/var/logs/meet-you-tutor.log'
