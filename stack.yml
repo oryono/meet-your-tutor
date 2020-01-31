@@ -72,7 +72,7 @@ services:
         - "traefik.http.routers.web.entrypoints=websecure"
         - "traefik.http.routers.web.tls.certresolver=letsencryptresolver"
         - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-        - "traefik.http.routers.redir.rule=Host(`meet-your-tutor.patrickoryono.site`)"
+        - "traefik.http.routers.redir.rule=Host(`api.meetyourtutor.online`)"
         - "traefik.http.routers.redir.entrypoints=web"
         - "traefik.http.routers.redir.middlewares=redirect-to-https"
       replicas: 1
