@@ -68,7 +68,7 @@ deploy_staging:
   only:
     - staging
   variables:
-    DOCKER_HOST: "tcp://meet-your-tutor.patrickoryono.site:2376"
+    DOCKER_HOST: "tcp://meetyourtutor.online:2376"
     DOCKER_CERT_PATH: "certs"
     DOCKER_TLS_VERIFY: "1"
   before_script:
