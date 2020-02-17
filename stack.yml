@@ -1,51 +1,21 @@
-version: "3.5"
+version: '3.5'
 
 networks:
   traefik-public:
     external: true
 
 services:
-  reverse-proxy:
-    image: traefik:v2.0.2
-    command:
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
-      - "--providers.docker.swarmMode=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=traefik-public"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443"
-      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencryptresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencryptresolver.acme.email=patricken08@gmail.com"
-      - "--certificatesresolvers.letsencryptresolver.acme.storage=/letsencrypt/acme.json"
-      - "--api.insecure"
-    ports:
-      - 80:80
-      - 443:443
-      - 8080:8080
-    volumes:
-      # So that Traefik can listen to the Docker events
-      - traefik-certificates:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - traefik-public
-    deploy:
-      labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.traefik.rule=Host(`monitor.patrickoryono.site`)"
-        - "traefik.http.routers.traefik.service=api@internal"
-
   db:
-    image: "postgres:latest"
+    image: 'postgres:latest'
     volumes:
-      - "db-data:/var/lib/postgresql/data"
-#    ports:
-#      - 5432:5432
+      - 'db-data:/var/lib/postgresql/data'
+    #    ports:
+    #      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: meet_your_tutor
-      POSTGRES_INITDB_ARGS: "--auth-local=md5"
+      POSTGRES_INITDB_ARGS: '--auth-local=md5'
     deploy:
       replicas: 1
       placement:
@@ -57,7 +27,7 @@ services:
       - traefik-public
 
   web:
-    image: "$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA"
+    image: '$CI_REGISTRY/$CI_DEPLOY_USER/$CI_PROJECT_NAME:$CI_COMMIT_SHA'
     environment:
       DATABASE_URL: ecto://postgres:postgres@db/meet_your_tutor
       SECRET_KEY_BASE: y7ceQkxx3WGV8MJdKOrhPZFAQjHKtBYsWZpaMUTPWJHGLuNwECVGQPdKLHE0XtrY
@@ -66,15 +36,15 @@ services:
     restart: on-failure:10
     deploy:
       labels:
-        - "traefik.enable=true"
-        - "traefik.http.routers.web.rule=Host(`api.meetyourtutor.online`)"
-        - "traefik.http.services.web.loadbalancer.server.port=4000"
-        - "traefik.http.routers.web.entrypoints=websecure"
-        - "traefik.http.routers.web.tls.certresolver=letsencryptresolver"
-        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-        - "traefik.http.routers.redir.rule=Host(`api.meetyourtutor.online`)"
-        - "traefik.http.routers.redir.entrypoints=web"
-        - "traefik.http.routers.redir.middlewares=redirect-to-https"
+        - 'traefik.enable=true'
+        - 'traefik.http.routers.web.rule=Host(`api.meetyourtutor.online`)'
+        - 'traefik.http.services.web.loadbalancer.server.port=4000'
+        - 'traefik.http.routers.web.entrypoints=websecure'
+        - 'traefik.http.routers.web.tls.certresolver=letsencryptresolver'
+        - 'traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https'
+        - 'traefik.http.routers.redir.rule=Host(`api.meetyourtutor.online`)'
+        - 'traefik.http.routers.redir.entrypoints=web'
+        - 'traefik.http.routers.redir.middlewares=redirect-to-https'
       replicas: 1
       restart_policy:
         condition: on-failure
